@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Sitemap: https://lajarana-org.luminari.agency/sitemap.xml

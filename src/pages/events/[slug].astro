@@ -5,7 +5,7 @@ import PublicEvent from '../../components/PublicEvent.jsx';
 import '../../styles/dashboard.css';
 const { slug } = Astro.params;
 ---
-<Layout title="Evento — LaJarana" description="Compra tus entradas para este evento en LaJarana.">
+<Layout title="Evento — LaJarana" description="Vista previa pública de tu evento en LaJarana.">
   <NavBar client:load />
   <div class="event-page-wrapper">
     <PublicEvent slug={slug} client:load />

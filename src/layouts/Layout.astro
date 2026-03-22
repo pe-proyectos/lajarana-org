@@ -5,8 +5,9 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  jsonLd?: string;
 }
-const { title, description = 'LaJarana — Plataforma de tickets digitales para eventos en Perú. Compra entradas, muestra tu QR y disfruta.', ogImage = '/og-default.png' } = Astro.props;
+const { title, description = 'LaJarana — Plataforma de tickets digitales para eventos en Perú. Compra entradas, muestra tu QR y disfruta.', ogImage = '/og-default.png', jsonLd } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, 'https://lajarana-org.luminari.agency');
 ---
 <!doctype html>
@@ -32,6 +33,12 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://lajarana-org.luminari.
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
+
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="LaJarana by Luminari Agency" />
+  <meta name="theme-color" content="#0A0A0A" />
+
+  {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 
   <title>{title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
