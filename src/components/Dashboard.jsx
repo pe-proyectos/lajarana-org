@@ -8,7 +8,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!getToken()) { window.location.href = '/login'; return; }
-    Promise.all([api.me(), api.getEvents()])
+    Promise.all([api.me(), api.getMyEvents()])
       .then(([u, evts]) => {
         setUser(u.user || u);
         setEvents(Array.isArray(evts) ? evts : evts.events || evts.data || []);

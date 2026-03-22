@@ -29,15 +29,15 @@ export default function EventStats({ eventId }) {
 
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-value gradient-text">{stats?.ticketsSold ?? 0}</div>
+          <div className="stat-value gradient-text">{stats?.totalTicketsSold ?? 0}</div>
           <div className="stat-label">Entradas vendidas</div>
         </div>
         <div className="stat-card">
-          <div className="stat-value" style={{ color: 'var(--lime)' }}>S/ {Number(stats?.revenue ?? 0).toFixed(2)}</div>
+          <div className="stat-value" style={{ color: 'var(--lime)' }}>S/ {Number(stats?.totalRevenue ?? 0).toFixed(2)}</div>
           <div className="stat-label">Ingresos</div>
         </div>
         <div className="stat-card">
-          <div className="stat-value" style={{ color: 'var(--coral)' }}>{stats?.ordersCount ?? 0}</div>
+          <div className="stat-value" style={{ color: 'var(--coral)' }}>{stats?.totalOrders ?? 0}</div>
           <div className="stat-label">Órdenes</div>
         </div>
       </div>

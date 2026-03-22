@@ -33,6 +33,7 @@ export const api = {
   register: (body) => request('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
   me: () => request('/auth/me'),
   getEvents: () => request('/events'),
+  getMyEvents: () => request('/events/my'),
   getEvent: (id) => request(`/events/${id}`),
   createEvent: (body) => request('/events', { method: 'POST', body: JSON.stringify(body) }),
   updateEvent: (id, body) => request(`/events/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),

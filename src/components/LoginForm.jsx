@@ -14,7 +14,8 @@ export default function LoginForm() {
     try {
       const data = await api.login({ email, password });
       setToken(data.token || data.access_token);
-      window.location.href = '/dashboard';
+      const redirect = new URLSearchParams(window.location.search).get('redirect');
+      window.location.href = redirect || '/dashboard';
     } catch (err) {
       setError(err.message);
     } finally {
