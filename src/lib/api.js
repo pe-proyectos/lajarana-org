@@ -48,4 +48,9 @@ export const api = {
   // Users
   getProfile: () => request('/users/me'),
   updateProfile: (body) => request('/users/me', { method: 'PATCH', body: JSON.stringify(body) }),
+  // Payment method
+  updatePaymentMethod: (body) => request('/users/me/payment-method', { method: 'PATCH', body: JSON.stringify(body) }),
+  // Plans (new)
+  activateEventPlan: (eventId, body) => request(`/plans/events/${eventId}/activate`, { method: 'POST', body: JSON.stringify(body) }),
+  upgradeUnlimited: () => request('/plans/upgrade-unlimited', { method: 'POST' }),
 };

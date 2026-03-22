@@ -7,6 +7,9 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
   const [form, setForm] = useState({ name: '', phone: '', company: '' });
+  const [mpEmail, setMpEmail] = useState('');
+  const [savingMp, setSavingMp] = useState(false);
+  const [mpMessage, setMpMessage] = useState(null);
 
   useEffect(() => {
     if (!getToken()) { window.location.href = '/login'; return; }
@@ -14,6 +17,7 @@ export default function ProfilePage() {
       .then(u => {
         setUser(u);
         setForm({ name: u.name || '', phone: u.phone || '', company: u.company || '' });
+        setMpEmail(u.mpEmail || '');
         setLoading(false);
       })
       .catch(() => { clearToken(); window.location.href = '/login'; });
@@ -35,7 +39,20 @@ export default function ProfilePage() {
 
   if (loading) return <div className="dash-layout"><div className="loading">Cargando...</div></div>;
 
-  const isPro = user?.plan === 'PRO';
+  async function handleSaveMp(e) {
+    e.preventDefault();
+    setSavingMp(true);
+    setMpMessage(null);
+    try {
+      await api.updatePaymentMethod({ mpEmail });
+      setMpMessage({ type: 'success', text: 'Método de pago actualizado' });
+    } catch (err) {
+      setMpMessage({ type: 'error', text: err.message });
+    }
+    setSavingMp(false);
+  }
+
+  const isUnlimited = user?.plan === 'UNLIMITED';
 
   return (
     <div className="dash-layout">
@@ -86,18 +103,18 @@ export default function ProfilePage() {
 
           <div className="profile-sidebar">
             <div className="profile-plan-card">
-              <span className={`plan-badge ${isPro ? 'plan-badge--pro' : 'plan-badge--free'}`}>
-                {isPro ? '⭐ PRO' : '🎫 COMISIÓN'}
+              <span className={`plan-badge ${isUnlimited ? 'plan-badge--pro' : 'plan-badge--free'}`}>
+                {isUnlimited ? '⭐ ILIMITADO' : '🎫 GRATUITO'}
               </span>
-              <h3>{isPro ? 'Plan Pro' : 'Plan Comisión'}</h3>
-              {isPro && user.planExpiresAt && (
+              <h3>{isUnlimited ? 'Plan Ilimitado' : 'Plan Gratuito'}</h3>
+              {isUnlimited && user.planExpiresAt && (
                 <p className="plan-expiry">
                   Hasta {new Date(user.planExpiresAt).toLocaleDateString('es-PE', { day: 'numeric', month: 'short' })}
                 </p>
               )}
-              {!isPro && (
+              {!isUnlimited && (
                 <a href="/dashboard/plan" className="btn-primary btn-sm" style={{ marginTop: 12, width: '100%', justifyContent: 'center' }}>
-                  Actualizar a Pro →
+                  Ver planes →
                 </a>
               )}
             </div>
@@ -113,6 +130,41 @@ export default function ProfilePage() {
                 <span className="profile-stat-label">Entradas vendidas</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Payment Method Section */}
+        <div style={{ marginTop: 32 }}>
+          <h2 className="dash-title" style={{ fontSize: '1.4rem' }}>💳 Método de Pago</h2>
+          <p className="dash-subtitle" style={{ marginBottom: 16 }}>
+            Configura tu cuenta de MercadoPago para recibir el dinero de tus ventas.
+          </p>
+
+          {mpMessage && (
+            <div className={mpMessage.type === 'success' ? 'success-msg' : 'error-msg'} style={{ marginBottom: 16 }}>
+              {mpMessage.text}
+            </div>
+          )}
+
+          <div className="form-card" style={{ maxWidth: 500 }}>
+            <form onSubmit={handleSaveMp}>
+              <div className="form-group">
+                <label>Email de MercadoPago</label>
+                <input
+                  className="form-input"
+                  type="email"
+                  value={mpEmail}
+                  onChange={e => setMpEmail(e.target.value)}
+                  placeholder="tu@email.com"
+                />
+                <span className="form-hint">El email asociado a tu cuenta de MercadoPago donde recibirás los pagos.</span>
+              </div>
+              <div className="form-actions">
+                <button className="btn-primary btn-sm" type="submit" disabled={savingMp}>
+                  {savingMp ? 'Guardando...' : 'Guardar método de pago'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
