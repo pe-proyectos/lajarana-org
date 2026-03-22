@@ -1,0 +1,14 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import EventStats from '../../../../components/EventStats.jsx';
+import '../../../../styles/dashboard.css';
+const { id } = Astro.params;
+---
+<Layout title="Estadísticas — LaJarana">
+  <div class="dash-layout">
+    <header class="dash-header">
+      <a href="/dashboard" class="logo">🎉 LaJarana</a>
+    </header>
+    <EventStats eventId={id} client:load />
+  </div>
+</Layout>

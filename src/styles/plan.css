@@ -1,0 +1,213 @@
+/* ============ PLAN MANAGEMENT ============ */
+.plan-current-card {
+  background: var(--bg-card);
+  border: 1px solid var(--white-06);
+  border-radius: var(--radius);
+  padding: 36px;
+  margin-bottom: 32px;
+}
+
+.plan-current-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.plan-current-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.plan-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.plan-badge--free {
+  background: var(--white-10);
+  color: var(--white-60);
+}
+
+.plan-badge--pro {
+  background: linear-gradient(135deg, var(--violet), var(--coral));
+  color: var(--white);
+}
+
+.plan-current-price {
+  text-align: right;
+}
+
+.plan-price-amount {
+  font-size: 2.4rem;
+  font-weight: 700;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.plan-price-period {
+  color: var(--white-60);
+  font-size: 1rem;
+}
+
+.plan-expiry {
+  color: var(--white-60);
+  font-size: 0.88rem;
+  margin-bottom: 20px;
+  padding: 10px 16px;
+  background: rgba(139, 92, 246, 0.08);
+  border-radius: 10px;
+  border-left: 3px solid var(--violet);
+}
+
+.plan-current-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.plan-feat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: var(--white-80);
+}
+
+.plan-feat-icon {
+  color: var(--lime);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.plan-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ============ PLAN COMPARISON ============ */
+.plan-comparison {
+  background: var(--bg-card);
+  border: 1px solid var(--white-06);
+  border-radius: var(--radius);
+  padding: 36px;
+}
+
+.plan-comparison h3 {
+  font-size: 1.3rem;
+  margin-bottom: 24px;
+}
+
+.plan-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.plan-compare-item {
+  padding: 24px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--white-06);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.plan-compare-item:hover {
+  border-color: var(--violet-20);
+}
+
+.plan-compare-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.plan-compare-item h4 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.plan-compare-item p {
+  color: var(--white-60);
+  font-size: 0.85rem;
+}
+
+/* ============ PROFILE ============ */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  align-items: start;
+}
+
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-plan-card,
+.profile-stats-card {
+  background: var(--bg-card);
+  border: 1px solid var(--white-06);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+.profile-plan-card h3,
+.profile-stats-card h3 {
+  font-size: 1.1rem;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.profile-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--white-06);
+}
+
+.profile-stat:last-child {
+  border-bottom: none;
+}
+
+.profile-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--violet);
+}
+
+.profile-stat-label {
+  color: var(--white-60);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 768px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+  .plan-current-header {
+    flex-direction: column;
+  }
+  .plan-current-price {
+    text-align: left;
+  }
+}

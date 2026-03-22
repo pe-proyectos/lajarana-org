@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PlanManager from '../../components/PlanManager.jsx';
+import '../../styles/dashboard.css';
+import '../../styles/plan.css';
+---
+<Layout title="Mi Plan — LaJarana">
+  <PlanManager client:load />
+</Layout>

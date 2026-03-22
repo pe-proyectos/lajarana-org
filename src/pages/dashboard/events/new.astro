@@ -1,0 +1,13 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import EventWizard from '../../../components/EventWizard.jsx';
+import '../../../styles/dashboard.css';
+---
+<Layout title="Crear Evento — LaJarana">
+  <div class="dash-layout">
+    <header class="dash-header">
+      <a href="/dashboard" class="logo">🎉 LaJarana</a>
+    </header>
+    <EventWizard client:load />
+  </div>
+</Layout>

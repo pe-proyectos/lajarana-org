@@ -1,0 +1,349 @@
+---
+import '../styles/events.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+const { title, description = 'LaJarana — Plataforma de tickets digitales para eventos en Perú. Compra entradas, muestra tu QR y disfruta.', ogImage = '/og-default.png' } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, 'https://lajarana-org.luminari.agency');
+---
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="canonical" href={canonicalURL.href} />
+
+  <!-- OG Tags -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:url" content={canonicalURL.href} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="LaJarana" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+</head>
+<body>
+  <slot />
+  <script>
+    import AOS from 'aos';
+    import 'aos/dist/aos.css';
+    AOS.init({
+      duration: 700,
+      easing: 'ease-out',
+      once: true,
+      offset: 80,
+    });
+  </script>
+</body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #0A0A0A;
+    --bg-card: rgba(255,255,255,0.03);
+    --bg-card-hover: rgba(255,255,255,0.07);
+    --violet: #8B5CF6;
+    --violet-20: rgba(139,92,246,0.2);
+    --violet-40: rgba(139,92,246,0.4);
+    --lime: #84CC16;
+    --lime-20: rgba(132,204,22,0.2);
+    --coral: #FF6B6B;
+    --coral-20: rgba(255,107,107,0.2);
+    --white: #FFFFFF;
+    --white-60: rgba(255,255,255,0.6);
+    --white-80: rgba(255,255,255,0.8);
+    --white-10: rgba(255,255,255,0.1);
+    --white-06: rgba(255,255,255,0.06);
+    --gradient-main: linear-gradient(135deg, var(--violet), var(--coral), var(--lime));
+    --gradient-violet-lime: linear-gradient(135deg, var(--violet), var(--lime));
+    --gradient-violet-coral: linear-gradient(135deg, var(--violet), var(--coral));
+    --gradient-coral-lime: linear-gradient(135deg, var(--coral), var(--lime));
+    --radius: 20px;
+    --radius-sm: 12px;
+    --shadow-float: 0 8px 32px rgba(139,92,246,0.12), 0 2px 8px rgba(0,0,0,0.3);
+    --shadow-float-hover: 0 16px 48px rgba(139,92,246,0.25), 0 4px 16px rgba(0,0,0,0.4);
+    --font: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  .logo-tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--violet);
+    padding: 3px 10px;
+    border: 1px solid var(--violet-20);
+    border-radius: 50px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ============ ISLAND CARDS ============ */
+  .island {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--white-06);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-float);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+    position: relative;
+  }
+  .island:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-float-hover);
+  }
+
+  /* ============ ANIMATED ISLAND ============ */
+  .island-animated {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--white-06);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-float);
+    position: relative;
+    overflow: hidden;
+  }
+  .island-animated::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: var(--radius);
+    padding: 1px;
+    background: linear-gradient(135deg, var(--glow-color, var(--violet)), transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .island-animated:hover::before { opacity: 1; }
+
+  /* ============ GRADIENT TEXT ============ */
+  .gradient-text {
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-text--vl {
+    background: var(--gradient-violet-lime);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-text--vc {
+    background: var(--gradient-violet-coral);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ============ BUTTONS ============ */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background: var(--gradient-main);
+    color: var(--bg);
+    font-family: var(--font);
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  }
+  .btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(139,92,246,0.4);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 1rem;
+    font-weight: 500;
+    border: 1px solid var(--white-10);
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--violet);
+    background: rgba(139,92,246,0.1);
+  }
+
+  /* ============ SECTIONS ============ */
+  section {
+    padding: 100px 0;
+    position: relative;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .section-subtitle {
+    color: var(--white-60);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin-bottom: 48px;
+  }
+
+  /* ============ GRADIENT SEPARATOR ============ */
+  .gradient-separator {
+    height: 2px;
+    background: var(--gradient-main);
+    border: none;
+    opacity: 0.4;
+    margin: 0;
+  }
+
+  /* ============ MARQUEE ============ */
+  .marquee-wrap {
+    overflow: hidden;
+    padding: 18px 0;
+    position: relative;
+    background: linear-gradient(90deg, var(--violet), var(--coral), var(--lime), var(--violet));
+    background-size: 200% 100%;
+    animation: marquee-bg 8s linear infinite;
+  }
+  @keyframes marquee-bg {
+    0% { background-position: 0% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: marquee-scroll 20s linear infinite;
+  }
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track span {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--bg);
+    white-space: nowrap;
+  }
+
+  /* ============ HERO BLOBS ============ */
+  .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    opacity: 0.35;
+  }
+  .hero-blob--1 {
+    width: 500px; height: 500px;
+    background: var(--violet);
+    top: -10%; left: -5%;
+    animation: blob-float 10s ease-in-out infinite;
+  }
+  .hero-blob--2 {
+    width: 400px; height: 400px;
+    background: var(--coral);
+    top: 20%; right: -10%;
+    animation: blob-float 12s ease-in-out infinite reverse;
+  }
+  .hero-blob--3 {
+    width: 350px; height: 350px;
+    background: var(--lime);
+    bottom: -15%; left: 30%;
+    animation: blob-float 14s ease-in-out infinite 2s;
+  }
+  @keyframes blob-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 15px) scale(0.95); }
+  }
+
+  /* ============ NOISE OVERLAY ============ */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  /* ============ STRIPED DECORATION ============ */
+  .stripe-decoration {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    opacity: 0.06;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--violet),
+      var(--violet) 2px,
+      transparent 2px,
+      transparent 12px
+    );
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    .hero-blob { opacity: 0.2; }
+    .stripe-decoration { display: none; }
+  }
+</style>

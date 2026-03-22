@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NavBar from '../components/NavBar.jsx';
+---
+
+<Layout title="404 — LaJarana">
+  <NavBar client:load />
+  <div class="page-404">
+    <div class="page-404-content">
+      <div class="page-404-emoji">🎭</div>
+      <h1 class="gradient-text">404</h1>
+      <p>Esta página se fue de juerga y no volvió.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;">
+        <a href="/" class="btn-primary">Ir al inicio</a>
+        <a href="/eventos" class="btn-secondary">Ver eventos</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-404 {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+  }
+  .page-404-emoji {
+    font-size: 4rem;
+    margin-bottom: 16px;
+  }
+  .page-404 h1 {
+    font-size: 6rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .page-404 p {
+    color: var(--white-60);
+    font-size: 1.2rem;
+  }
+</style>

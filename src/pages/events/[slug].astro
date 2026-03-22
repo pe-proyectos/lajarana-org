@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NavBar from '../../components/NavBar.jsx';
+import PublicEvent from '../../components/PublicEvent.jsx';
+import '../../styles/dashboard.css';
+const { slug } = Astro.params;
+---
+<Layout title="Evento — LaJarana" description="Compra tus entradas para este evento en LaJarana.">
+  <NavBar client:load />
+  <div class="event-page-wrapper">
+    <PublicEvent slug={slug} client:load />
+  </div>
+</Layout>
+
+<style>
+  .event-page-wrapper {
+    padding-top: 80px;
+    min-height: 100vh;
+  }
+</style>
