@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import QRScanner from '../../components/QRScanner.jsx';
+import '../../styles/dashboard.css';
+import '../../styles/scanner.css';
+---
+<Layout title="Scanner — LaJarana" description="Escanea entradas QR en la puerta de tu evento.">
+  <QRScanner client:load />
+</Layout>

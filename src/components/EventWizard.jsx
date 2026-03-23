@@ -46,6 +46,8 @@ export default function EventWizard({ eventId: editId }) {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEdit);
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
 
   useEffect(() => {
     if (!getToken()) { window.location.href = '/login'; return; }
@@ -76,6 +78,36 @@ export default function EventWizard({ eventId: editId }) {
 
   function update(key, val) { setForm(f => ({ ...f, [key]: val })); }
   function updateTicket(key, val) { setTicketForm(f => ({ ...f, [key]: val })); }
+
+  async function handleImageUpload(file) {
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { setError('La imagen no puede superar 5MB'); return; }
+    if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+      setError('Solo se permiten imágenes (JPG, PNG, WebP, GIF)'); return;
+    }
+    setUploading(true); setError('');
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const token = getToken();
+      const res = await fetch(`${import.meta.env.PUBLIC_API_URL || 'https://lajarana-api.luminari.agency'}/api/upload`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al subir imagen');
+      update('coverImage', data.url);
+      setSuccess('✅ Imagen subida correctamente');
+    } catch (err) { setError(err.message); }
+    setUploading(false);
+  }
+
+  function handleDrop(e) {
+    e.preventDefault(); setDragOver(false);
+    const file = e.dataTransfer?.files?.[0];
+    if (file) handleImageUpload(file);
+  }
 
   function validateDates() {
     const now = new Date();
@@ -220,17 +252,50 @@ export default function EventWizard({ eventId: editId }) {
                 <span className="form-hint">Debe ser igual o posterior al inicio</span>
               </div>
             </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>🖼️ URL de imagen de portada</label>
-                <input className="form-input" value={form.coverImage} onChange={e => update('coverImage', e.target.value)} placeholder="https://..." />
-                <span className="form-hint">Imagen que se mostrará en la página del evento</span>
+            <div className="form-group">
+              <label>🖼️ Imagen de portada</label>
+              <div
+                className={`upload-zone${dragOver ? ' upload-zone--active' : ''}`}
+                onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={handleDrop}
+                onClick={() => document.getElementById('cover-upload').click()}
+                style={{
+                  border: '2px dashed var(--white-20)',
+                  borderRadius: '12px',
+                  padding: '24px',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  transition: 'border-color 0.2s',
+                  borderColor: dragOver ? 'var(--violet)' : 'var(--white-20)',
+                  background: dragOver ? 'rgba(139,92,246,0.05)' : 'transparent',
+                }}
+              >
+                <input
+                  id="cover-upload"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  style={{ display: 'none' }}
+                  onChange={e => handleImageUpload(e.target.files?.[0])}
+                />
+                {uploading ? (
+                  <p style={{ color: 'var(--violet)', margin: 0 }}>⏳ Subiendo imagen...</p>
+                ) : (
+                  <>
+                    <p style={{ margin: '0 0 4px', color: 'var(--white-70)' }}>📁 Arrastra una imagen aquí o haz clic para seleccionar</p>
+                    <p style={{ margin: 0, color: 'var(--white-40)', fontSize: '12px' }}>JPG, PNG, WebP o GIF — Máx 5MB</p>
+                  </>
+                )}
               </div>
-              <div className="form-group">
-                <label>👥 Capacidad máxima</label>
-                <input type="number" className="form-input" value={form.maxCapacity} onChange={e => update('maxCapacity', e.target.value)} placeholder="Ej: 500" min="1" />
-                <span className="form-hint">Máximo de asistentes permitidos</span>
+              <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: 'var(--white-40)', fontSize: '12px' }}>o pega una URL:</span>
+                <input className="form-input" value={form.coverImage} onChange={e => update('coverImage', e.target.value)} placeholder="https://..." style={{ flex: 1 }} />
               </div>
+            </div>
+            <div className="form-group">
+              <label>👥 Capacidad máxima</label>
+              <input type="number" className="form-input" value={form.maxCapacity} onChange={e => update('maxCapacity', e.target.value)} placeholder="Ej: 500" min="1" />
+              <span className="form-hint">Máximo de asistentes permitidos</span>
             </div>
             {form.coverImage && (
               <div className="cover-preview">

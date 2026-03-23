@@ -1,0 +1,226 @@
+/* ============ QR SCANNER ============ */
+.scanner-layout {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font);
+  display: flex;
+  flex-direction: column;
+}
+
+.scanner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--white-06);
+  background: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.scanner-back {
+  color: var(--white-60);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+.scanner-back:hover { color: var(--violet); }
+
+.scanner-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.scanner-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+/* Setup screen */
+.scanner-setup {
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.scanner-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.scanner-setup h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.scanner-desc {
+  color: var(--white-60);
+  margin-bottom: 32px;
+  font-size: 0.95rem;
+}
+
+.scanner-no-events {
+  padding: 32px 0;
+  color: var(--white-60);
+}
+
+.scanner-start-btn {
+  width: 100%;
+  max-width: 400px;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 16px 32px !important;
+  font-size: 1.1rem !important;
+}
+
+/* Active scanning */
+.scanner-active {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.scanner-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--white-06);
+  border-radius: 50px;
+  padding: 10px 24px;
+}
+
+.scanner-counter-num {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--lime);
+}
+
+.scanner-counter-label {
+  color: var(--white-60);
+  font-size: 0.85rem;
+}
+
+.scanner-camera-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--white-10);
+  background: #000;
+}
+
+.scanner-camera {
+  width: 100%;
+}
+
+/* Hide html5-qrcode UI clutter */
+.scanner-camera #qr-shaded-region {
+  border-color: var(--violet) !important;
+}
+
+.scanner-camera img[alt="Info icon"] { display: none !important; }
+.scanner-camera a { display: none !important; }
+.scanner-camera select { display: none !important; }
+
+/* Result overlay */
+.scanner-result {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: resultFadeIn 0.2s ease-out;
+  padding: 24px;
+  text-align: center;
+}
+
+.scanner-result--success {
+  background: rgba(132, 204, 22, 0.9);
+  color: #0A0A0A;
+}
+
+.scanner-result--error {
+  background: rgba(255, 107, 107, 0.9);
+  color: #fff;
+}
+
+.scanner-result-icon {
+  font-size: 4rem;
+  margin-bottom: 12px;
+}
+
+.scanner-result-message {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.scanner-result-detail {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+@keyframes resultFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Processing spinner */
+.scanner-processing {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 10, 0.8);
+  z-index: 5;
+  gap: 12px;
+  color: var(--white);
+  font-size: 1rem;
+}
+
+.scanner-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--white-10);
+  border-top-color: var(--violet);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.scanner-stop-btn {
+  width: 100%;
+  max-width: 500px;
+  justify-content: center;
+  padding: 14px !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .scanner-content {
+    padding: 16px 12px;
+  }
+  .scanner-setup h1 {
+    font-size: 1.3rem;
+  }
+}

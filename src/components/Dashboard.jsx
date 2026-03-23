@@ -7,6 +7,7 @@ export default function Dashboard() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!getToken()) { window.location.href = '/login'; return; }
@@ -32,6 +33,7 @@ export default function Dashboard() {
       <header className="dash-header">
         <a href="/dashboard" className="logo">🎉 LaJarana</a>
         <div className="dash-header-right">
+          <a href="/dashboard/scanner" className="btn-ghost btn-sm" style={{ fontSize: '0.8rem' }}>📷 Scanner</a>
           <a href="/dashboard/plan" className="btn-ghost btn-sm" style={{ fontSize: '0.8rem' }}>
             {user?.plan === 'PRO' ? '⭐ Pro' : '🎫 Plan'}
           </a>
@@ -109,10 +111,12 @@ export default function Dashboard() {
         isOpen={deleteTarget !== null}
         onConfirm={() => {
           const id = deleteTarget;
+          setDeleting(true);
           setDeleteTarget(null);
           api.deleteEvent(id).then(() => {
             setEvents(prev => prev.filter(ev => ev.id !== id));
-          }).catch(err => alert('Error al eliminar: ' + err.message));
+          }).catch(err => alert('Error al eliminar: ' + err.message))
+          .finally(() => setDeleting(false));
         }}
         onCancel={() => setDeleteTarget(null)}
       />
