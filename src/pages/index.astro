@@ -63,8 +63,7 @@ import AnimatedCard from '../components/AnimatedCard.jsx';
         </div>
         <div class="stat-counter-divider">·</div>
         <div class="stat-counter-item">
-          <span class="stat-counter-prefix">+</span><span class="stat-counter-value" data-count="500">0</span>
-          <span class="stat-counter-label">organizadores confían en nosotros</span>
+          <span class="stat-counter-label" style="font-size:1.1rem;color:var(--white-80);">La plataforma de boletería digital para organizadores en Perú</span>
         </div>
       </div>
     </div>
@@ -252,46 +251,6 @@ import AnimatedCard from '../components/AnimatedCard.jsx';
   </section>
 
   <hr class="gradient-separator" />
-
-  <!-- TESTIMONIALS -->
-  <section class="section--testimonials">
-    <div class="container">
-      <h2 class="section-title" data-aos="fade-up" style="text-align:center;">Lo que dicen nuestros <span class="gradient-text">organizadores</span></h2>
-      <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100" style="text-align:center;margin:0 auto 48px;">Organizadores reales que confían en LaJarana para sus eventos.</p>
-      <div class="testimonials-grid">
-        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="0">
-          <div class="testimonial-quote">"Antes perdía el 10% en comisiones. Con LaJarana me quedo con todo el dinero de mis ventas. El dashboard es increíble."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">CR</div>
-            <div>
-              <div class="testimonial-name">Carlos Rojas</div>
-              <div class="testimonial-event">Festival Electrónico Lima 2026</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="testimonial-quote">"El control de acceso con QR nos ahorró horas de trabajo. Escaneamos 800 entradas en la puerta sin problemas."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar" style="background:var(--gradient-violet-coral);">MP</div>
-            <div>
-              <div class="testimonial-name">María Pérez</div>
-              <div class="testimonial-event">Noche de Cumbia — Arequipa</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="testimonial-quote">"Creé mi evento en 5 minutos y vendí 300 entradas en la primera semana. La plataforma es súper fácil de usar."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar" style="background:var(--gradient-coral-lime);">DT</div>
-            <div>
-              <div class="testimonial-name">Diego Torres</div>
-              <div class="testimonial-event">Stand-Up Comedy Night</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- CTA -->
   <section style="padding:80px 0;text-align:center;">
@@ -629,60 +588,6 @@ import AnimatedCard from '../components/AnimatedCard.jsx';
     font-size: 2rem;
     color: var(--white-10);
     font-weight: 300;
-  }
-
-  /* TESTIMONIALS */
-  .section--testimonials { padding: 100px 0; }
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-  }
-  .testimonial-card {
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--white-06);
-    border-radius: var(--radius);
-    padding: 32px;
-    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-  }
-  .testimonial-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 48px rgba(139,92,246,0.15);
-    border-color: var(--violet-20);
-  }
-  .testimonial-quote {
-    font-size: 1rem;
-    color: var(--white-80);
-    line-height: 1.7;
-    margin-bottom: 24px;
-    font-style: italic;
-  }
-  .testimonial-author {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .testimonial-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--gradient-main);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--bg);
-    flex-shrink: 0;
-  }
-  .testimonial-name {
-    font-weight: 600;
-    font-size: 0.95rem;
-  }
-  .testimonial-event {
-    color: var(--white-60);
-    font-size: 0.8rem;
   }
 
   /* PRICING HOVER EFFECTS */

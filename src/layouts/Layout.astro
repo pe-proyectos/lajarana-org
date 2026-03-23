@@ -39,6 +39,10 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://lajarana-org.luminari.
 
   {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="https://lajarana-api.luminari.agency" />
+  <link rel="preconnect" href="https://lajarana-api.luminari.agency" crossorigin />
+
   <title>{title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

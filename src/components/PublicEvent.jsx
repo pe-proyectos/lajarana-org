@@ -78,7 +78,7 @@ export default function PublicEvent({ slug }) {
       {/* Hero cover */}
       <div className="public-event-hero">
         {event.coverImage ? (
-          <img src={event.coverImage} alt={event.title} className="public-event-cover" />
+          <img src={event.coverImage} alt={event.title} className="public-event-cover" fetchpriority="high" />
         ) : (
           <div className="public-event-cover-placeholder">
             <span>🎉</span>
