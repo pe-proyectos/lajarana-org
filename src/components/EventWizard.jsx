@@ -38,10 +38,11 @@ export default function EventWizard({ eventId: editId }) {
     startDate: '', endDate: '', coverImage: '', maxCapacity: '', category: '',
   });
   const [tickets, setTickets] = useState([]);
-  const [ticketForm, setTicketForm] = useState({ name: '', price: '', quantity: '', description: '' });
+  const [ticketForm, setTicketForm] = useState({ name: '', price: '', quantity: '', description: '', ticketType: 'normal', boxQuantity: 2 });
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [editingTicket, setEditingTicket] = useState(null);
+  const [deleteTicketTarget, setDeleteTicketTarget] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -163,6 +164,7 @@ export default function EventWizard({ eventId: editId }) {
     if (!ticketForm.name || !ticketForm.price || !ticketForm.quantity) {
       setError('Nombre, precio y cantidad son obligatorios.'); return;
     }
+    const isBox = ticketForm.ticketType === 'box';
     setLoading(true);
     try {
       const body = {
@@ -171,16 +173,45 @@ export default function EventWizard({ eventId: editId }) {
         price: Number(ticketForm.price),
         quantity: Number(ticketForm.quantity),
         description: ticketForm.description || undefined,
+        isBox,
+        boxQuantity: isBox ? Number(ticketForm.boxQuantity) || 2 : undefined,
       };
-      await api.createTicketType(body);
-      setTicketForm({ name: '', price: '', quantity: '', description: '' });
+      if (editingTicket) {
+        delete body.eventId;
+        await api.updateTicketType(editingTicket, body);
+        setSuccess('✅ Tipo de entrada actualizado');
+      } else {
+        await api.createTicketType(body);
+        setSuccess('✅ Tipo de entrada agregado');
+      }
+      setTicketForm({ name: '', price: '', quantity: '', description: '', ticketType: 'normal', boxQuantity: 2 });
       setShowTicketForm(false);
-      // reload tickets
+      setEditingTicket(null);
       const tix = await api.getTicketTypes(eventId);
       setTickets(Array.isArray(tix) ? tix : tix.ticketTypes || tix.data || []);
-      setSuccess('✅ Tipo de entrada agregado');
     } catch (err) { setError(err.message); }
     setLoading(false);
+  }
+
+  function startEditTicketWizard(t) {
+    setEditingTicket(t.id);
+    setTicketForm({
+      name: t.name, price: Number(t.price), quantity: t.quantity,
+      description: t.description || '', ticketType: t.isBox ? 'box' : 'normal',
+      boxQuantity: t.boxQuantity || 2,
+    });
+    setShowTicketForm(true);
+  }
+
+  async function confirmDeleteTicket() {
+    setError('');
+    try {
+      await api.deleteTicketType(deleteTicketTarget);
+      setDeleteTicketTarget(null);
+      const tix = await api.getTicketTypes(eventId);
+      setTickets(Array.isArray(tix) ? tix : tix.ticketTypes || tix.data || []);
+      setSuccess('✅ Entrada eliminada');
+    } catch (err) { setError(err.message); setDeleteTicketTarget(null); }
   }
 
   async function publishEvent() {
@@ -342,31 +373,40 @@ export default function EventWizard({ eventId: editId }) {
               </div>
             ) : (
               tickets.map(t => (
-                <div key={t.id} className="ticket-type-card ticket-type-card--enhanced">
+                <div key={t.id} className={`ticket-type-card ticket-type-card--enhanced${t.isBox ? ' eb-box-card' : ''}`}>
                   <div className="ticket-type-info">
-                    <h4>{t.name}</h4>
-                    <div className="ticket-type-meta">{t.description || 'Sin descripción'}</div>
+                    <h4>{t.name} {t.isBox && <span className="eb-qty-badge">📦 Box x{t.boxQuantity}</span>}</h4>
+                    <div className="ticket-type-meta">{t.description || 'Sin descripción'}{t.isBox && ` · Incluye ${t.boxQuantity} entradas`}</div>
                     <div className="ticket-sold">
                       <span className="ticket-qty-badge">{t.quantity} disponibles</span>
                     </div>
                   </div>
-                  <div className="ticket-price">S/ {Number(t.price).toFixed(2)}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div className="ticket-price">S/ {Number(t.price).toFixed(2)}</div>
+                    <button type="button" className="btn-ghost btn-sm" onClick={() => startEditTicketWizard(t)} title="Editar">✏️</button>
+                    <button type="button" className="btn-ghost btn-sm" onClick={() => setDeleteTicketTarget(t.id)} title="Eliminar" style={{ borderColor: 'var(--coral)', color: 'var(--coral)' }}>🗑️</button>
+                  </div>
                 </div>
               ))
             )}
           </div>
 
-          <button className="btn-secondary wizard-add-btn" onClick={() => setShowTicketForm(!showTicketForm)}>
+          <button className="btn-secondary wizard-add-btn" onClick={() => { setShowTicketForm(!showTicketForm); setEditingTicket(null); setTicketForm({ name: '', price: '', quantity: '', description: '', ticketType: 'normal', boxQuantity: 2 }); }}>
             {showTicketForm ? '✕ Cancelar' : '+ Agregar tipo de entrada'}
           </button>
 
           {showTicketForm && (
             <div className="wizard-ticket-form">
               <form onSubmit={addTicket}>
+                <h4 style={{ marginBottom: 16 }}>{editingTicket ? '✏️ Editar entrada' : '➕ Nueva entrada'}</h4>
+                <div className="ed-type-selector">
+                  <button type="button" className={`ed-type-btn${ticketForm.ticketType === 'normal' ? ' ed-type-btn--active' : ''}`} onClick={() => updateTicket('ticketType', 'normal')}>🎟️ Entrada Normal</button>
+                  <button type="button" className={`ed-type-btn${ticketForm.ticketType === 'box' ? ' ed-type-btn--active' : ''}`} onClick={() => updateTicket('ticketType', 'box')}>📦 Box</button>
+                </div>
                 <div className="form-row">
                   <div className="form-group">
                     <label>Nombre *</label>
-                    <input className="form-input" value={ticketForm.name} onChange={e => updateTicket('name', e.target.value)} placeholder="Ej: General, VIP, Platinum" required />
+                    <input className="form-input" value={ticketForm.name} onChange={e => updateTicket('name', e.target.value)} placeholder={ticketForm.ticketType === 'box' ? 'Ej: Box VIP x6' : 'Ej: General, VIP'} required />
                   </div>
                   <div className="form-group">
                     <label>Precio (S/) *</label>
@@ -375,17 +415,30 @@ export default function EventWizard({ eventId: editId }) {
                 </div>
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Cantidad *</label>
+                    <label>{ticketForm.ticketType === 'box' ? 'Cantidad de boxes disponibles *' : 'Cantidad *'}</label>
                     <input type="number" min="1" className="form-input" value={ticketForm.quantity} onChange={e => updateTicket('quantity', e.target.value)} placeholder="100" required />
                   </div>
                   <div className="form-group">
                     <label>Descripción</label>
-                    <input className="form-input" value={ticketForm.description} onChange={e => updateTicket('description', e.target.value)} placeholder="Acceso general, incluye..." />
+                    <input className="form-input" value={ticketForm.description} onChange={e => updateTicket('description', e.target.value)} placeholder={ticketForm.ticketType === 'box' ? 'Incluye mesa y bebidas' : 'Acceso general, incluye...'} />
                   </div>
                 </div>
-                <button type="submit" className="btn-primary btn-sm" disabled={loading}>
-                  {loading ? 'Guardando...' : '✓ Agregar entrada'}
-                </button>
+                {ticketForm.ticketType === 'box' && (
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>📦 Entradas por box *</label>
+                      <input type="number" min="2" className="form-input" value={ticketForm.boxQuantity} onChange={e => updateTicket('boxQuantity', e.target.value)} />
+                      <span className="form-hint">Cantidad de personas que entran con cada box</span>
+                    </div>
+                    <div className="form-group" />
+                  </div>
+                )}
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button type="submit" className="btn-primary btn-sm" disabled={loading}>
+                    {loading ? 'Guardando...' : editingTicket ? '✓ Guardar cambios' : '✓ Agregar entrada'}
+                  </button>
+                  {editingTicket && <button type="button" className="btn-ghost btn-sm" onClick={() => { setEditingTicket(null); setTicketForm({ name: '', price: '', quantity: '', description: '', ticketType: 'normal', boxQuantity: 2 }); }}>Cancelar</button>}
+                </div>
               </form>
             </div>
           )}
@@ -465,6 +518,7 @@ export default function EventWizard({ eventId: editId }) {
                 <div key={t.id} className="review-ticket">
                   <div>
                     <strong>{t.name}</strong>
+                    {t.isBox && <span className="eb-qty-badge" style={{ marginLeft: 8 }}>📦 Box x{t.boxQuantity}</span>}
                     <span className="review-ticket-qty">{t.quantity} disponibles</span>
                   </div>
                   <span className="review-ticket-price">S/ {Number(t.price).toFixed(2)}</span>
@@ -473,17 +527,7 @@ export default function EventWizard({ eventId: editId }) {
             )}
           </div>
 
-          {editId && (
-            <div className="review-section">
-              <h3 className="review-section-title">📦 Entrada Boxes</h3>
-              <p style={{ color: 'var(--white-60)', fontSize: '0.9rem', margin: '8px 0' }}>
-                Crea paquetes de entradas con precio especial para grupos.
-              </p>
-              <a href={`/dashboard/events/${editId}/boxes`} className="btn-primary btn-sm" style={{ display: 'inline-block', marginTop: 4 }}>
-                Gestionar Boxes →
-              </a>
-            </div>
-          )}
+          {/* Boxes are now managed as ticket types */}
 
           {form.coverImage && (
             <div className="review-section">
@@ -518,6 +562,13 @@ export default function EventWizard({ eventId: editId }) {
           )}
         </div>
       )}
+      <ConfirmModal
+        isOpen={deleteTicketTarget !== null}
+        title="¿Eliminar este tipo de entrada?"
+        message="Esta acción no se puede deshacer."
+        onConfirm={confirmDeleteTicket}
+        onCancel={() => setDeleteTicketTarget(null)}
+      />
       <ConfirmModal
         isOpen={showDeleteModal}
         onConfirm={() => {
