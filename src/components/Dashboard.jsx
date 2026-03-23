@@ -71,11 +71,16 @@ export default function Dashboard() {
         </div>
 
         {events.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--white-60)' }}>
-            <div style={{ fontSize: '3rem', marginBottom: 16 }}>🎉</div>
-            <p style={{ fontSize: '1.1rem', marginBottom: 8 }}>No tienes eventos aún</p>
-            <p style={{ fontSize: '0.9rem', marginBottom: 24, opacity: 0.7 }}>Crea tu primer evento y empieza a vender entradas</p>
-            <a href="/dashboard/events/new" className="btn-primary" style={{ display: 'inline-flex' }}>Crear mi primer evento</a>
+          <div className="dash-empty-state">
+            <div className="dash-empty-illustration">
+              <span className="dash-empty-icon">🎫</span>
+              <span className="dash-empty-icon dash-empty-icon--secondary">✨</span>
+            </div>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: 8 }}>Aún no tienes eventos</h3>
+            <p style={{ fontSize: '0.95rem', marginBottom: 24, color: 'var(--white-60)', maxWidth: 400, margin: '0 auto 24px' }}>
+              Crea tu primer evento en minutos y empieza a vender entradas con QR anti-fraude.
+            </p>
+            <a href="/dashboard/events/new" className="btn-primary" style={{ display: 'inline-flex' }}>🚀 Crear mi primer evento</a>
           </div>
         ) : (
           events.map(evt => (

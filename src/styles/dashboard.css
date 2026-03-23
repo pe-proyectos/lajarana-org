@@ -1,9 +1,18 @@
 /* Dashboard shared styles */
+@keyframes dashFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .dash-layout {
   min-height: 100vh;
   background: var(--bg);
   color: var(--white);
   font-family: var(--font);
+}
+
+.dash-content {
+  animation: dashFadeIn 0.5s ease-out;
 }
 
 .dash-header {
@@ -87,6 +96,13 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(139,92,246,0.15);
+  border-color: rgba(139,92,246,0.2);
 }
 
 .stat-card::before {
@@ -98,6 +114,17 @@
   height: 3px;
   background: var(--gradient-main);
   opacity: 0.6;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(139,92,246,0.04) 0%, transparent 60%);
+  pointer-events: none;
 }
 
 .stat-value {
@@ -188,6 +215,7 @@
 .event-row:hover {
   border-color: var(--violet-40);
   transform: translateX(4px);
+  box-shadow: 0 4px 24px rgba(139,92,246,0.12);
 }
 
 .event-row-info h3 {
@@ -227,6 +255,35 @@
 .badge-draft { background: var(--white-10); color: var(--white-60); }
 .badge-published { background: var(--lime-20); color: var(--lime); }
 .badge-cancelled { background: var(--coral-20); color: var(--coral); }
+
+/* ============ EMPTY STATE ============ */
+.dash-empty-state {
+  text-align: center;
+  padding: 80px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--white-06);
+  border-radius: var(--radius);
+}
+.dash-empty-illustration {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.dash-empty-icon {
+  font-size: 4rem;
+  display: block;
+}
+.dash-empty-icon--secondary {
+  position: absolute;
+  top: -8px;
+  right: -20px;
+  font-size: 1.5rem;
+  animation: emptyPulse 2s ease-in-out infinite;
+}
+@keyframes emptyPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+}
 
 /* ============ FORMS ============ */
 .form-card {
