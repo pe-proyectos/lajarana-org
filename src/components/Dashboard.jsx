@@ -14,7 +14,8 @@ export default function Dashboard() {
     Promise.all([api.me(), api.getMyEvents()])
       .then(([u, evts]) => {
         setUser(u.user || u);
-        setEvents(Array.isArray(evts) ? evts : evts.events || evts.data || []);
+        const evtList = Array.isArray(evts) ? evts : evts.events || evts.data || [];
+        setEvents(evtList);
         setLoading(false);
       })
       .catch(() => { clearToken(); window.location.href = '/login'; });

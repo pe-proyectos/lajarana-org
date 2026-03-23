@@ -1050,16 +1050,57 @@ select option {
   }
   .dash-header {
     padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .dash-header-right {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
   .dash-content {
     padding: 24px 16px;
   }
+  .dash-title {
+    font-size: 1.5rem;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .stat-card {
+    padding: 20px 16px;
+  }
+  .stat-value {
+    font-size: 2rem;
+  }
   .event-row {
     flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 12px;
+  }
+  .event-row-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .event-row-wrapper .btn-delete-event {
+    align-self: flex-end;
+    margin-top: -8px;
+  }
+  .events-header {
+    flex-direction: column;
+    gap: 12px;
     align-items: flex-start;
   }
   .event-pills {
     flex-direction: column;
+  }
+  .ticket-type-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
   }
   .ticket-select-card {
     flex-direction: column;
@@ -1076,7 +1117,21 @@ select option {
     margin: 0;
   }
   .wizard-card {
-    padding: 24px;
+    padding: 20px 16px;
+  }
+  .form-card {
+    padding: 24px 16px;
+  }
+  .form-actions {
+    flex-direction: column;
+  }
+  .form-actions button, .form-actions a {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  .auth-card {
+    padding: 28px 20px;
   }
 }
 

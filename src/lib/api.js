@@ -40,8 +40,19 @@ export const api = {
   deleteEvent: (id) => request(`/events/${id}`, { method: 'DELETE' }),
   getTicketTypes: (eventId) => request(`/ticket-types/by-event/${eventId}`),
   createTicketType: (body) => request('/ticket-types', { method: 'POST', body: JSON.stringify(body) }),
+  updateTicketType: (id, body) => request(`/ticket-types/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  deleteTicketType: (id) => request(`/ticket-types/${id}`, { method: 'DELETE' }),
+  getCategories: () => request('/categories'),
   getEventStats: (id) => request(`/events/${id}/stats`),
-  getPublicEvents: () => request('/public/events'),
+  getPublicEvents: (params = {}) => {
+    const qs = new URLSearchParams();
+    if (params.page) qs.set('page', params.page);
+    if (params.limit) qs.set('limit', params.limit);
+    if (params.category) qs.set('category', params.category);
+    if (params.city) qs.set('city', params.city);
+    const q = qs.toString();
+    return request(`/public/events${q ? '?' + q : ''}`);
+  },
   getPublicEvent: (slug) => request(`/public/events/${slug}`),
   // Plans
   getPlans: () => request('/plans'),

@@ -35,7 +35,7 @@ export default function EventWizard({ eventId: editId }) {
   const [event, setEvent] = useState(null);
   const [form, setForm] = useState({
     title: '', description: '', venue: '', address: '', city: '',
-    startDate: '', endDate: '', coverImage: '', maxCapacity: '',
+    startDate: '', endDate: '', coverImage: '', maxCapacity: '', category: '',
   });
   const [tickets, setTickets] = useState([]);
   const [ticketForm, setTicketForm] = useState({ name: '', price: '', quantity: '', description: '' });
@@ -69,6 +69,7 @@ export default function EventWizard({ eventId: editId }) {
         endDate: evt.endDate ? evt.endDate.slice(0, 16) : '',
         coverImage: evt.coverImage || '',
         maxCapacity: evt.maxCapacity || '',
+        category: evt.category || '',
       });
       const tix = await api.getTicketTypes(id);
       setTickets(Array.isArray(tix) ? tix : tix.ticketTypes || tix.data || []);
@@ -225,6 +226,16 @@ export default function EventWizard({ eventId: editId }) {
               <label>Descripción</label>
               <textarea className="form-input" value={form.description} onChange={e => update('description', e.target.value)} placeholder="Describe tu evento, artistas, actividades..." rows={4} />
               <span className="form-hint">Cuenta de qué trata tu evento para atraer asistentes</span>
+            </div>
+            <div className="form-group">
+              <label>🏷️ Categoría</label>
+              <select className="form-input" value={form.category} onChange={e => update('category', e.target.value)}>
+                <option value="">Seleccionar categoría</option>
+                {["Concierto", "Festival", "Fiesta", "Teatro", "Deportes", "Conferencia", "Otro"].map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              <span className="form-hint">Ayuda a los asistentes a encontrar tu evento</span>
             </div>
             <div className="form-row">
               <div className="form-group">
@@ -431,6 +442,10 @@ export default function EventWizard({ eventId: editId }) {
               <div className="review-item">
                 <span className="review-label">Capacidad</span>
                 <span className="review-value">{form.maxCapacity || 'Sin límite'}</span>
+              </div>
+              <div className="review-item">
+                <span className="review-label">Categoría</span>
+                <span className="review-value">{form.category || 'Sin categoría'}</span>
               </div>
             </div>
             {form.description && (
