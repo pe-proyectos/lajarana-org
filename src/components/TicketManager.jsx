@@ -7,7 +7,7 @@ export default function TicketManager({ eventId }) {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ name: '', price: '', quantity: '', description: '', salesStartDate: '', salesEndDate: '' });
+  const [form, setForm] = useState({ name: '', price: '', quantity: '', description: '', salesStartDate: '', salesEndDate: '', isBox: false, boxQuantity: 2 });
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -40,8 +40,9 @@ export default function TicketManager({ eventId }) {
       };
       if (form.salesStartDate) body.salesStart = new Date(form.salesStartDate).toISOString();
       if (form.salesEndDate) body.salesEnd = new Date(form.salesEndDate).toISOString();
+      if (form.isBox) { body.isBox = true; body.boxQuantity = Number(form.boxQuantity) || 2; }
       await api.createTicketType(body);
-      setForm({ name: '', price: '', quantity: '', description: '', salesStartDate: '', salesEndDate: '' });
+      setForm({ name: '', price: '', quantity: '', description: '', salesStartDate: '', salesEndDate: '', isBox: false, boxQuantity: 2 });
       setShowForm(false);
       await load();
     } catch (err) { setError(err.message); }
@@ -54,6 +55,7 @@ export default function TicketManager({ eventId }) {
       name: t.name, price: Number(t.price), quantity: t.quantity,
       description: t.description || '', salesStart: t.salesStart ? t.salesStart.slice(0, 16) : '',
       salesEnd: t.salesEnd ? t.salesEnd.slice(0, 16) : '',
+      isBox: t.isBox || false, boxQuantity: t.boxQuantity || 2,
     });
   }
 
@@ -65,6 +67,8 @@ export default function TicketManager({ eventId }) {
       else delete body.salesStart;
       if (body.salesEnd) body.salesEnd = new Date(body.salesEnd).toISOString();
       else delete body.salesEnd;
+      body.isBox = !!body.isBox;
+      body.boxQuantity = Number(body.boxQuantity) || 1;
       await api.updateTicketType(editingId, body);
       setEditingId(null);
       await load();
@@ -131,6 +135,18 @@ export default function TicketManager({ eventId }) {
                 <input type="datetime-local" className="form-input" value={form.salesEndDate} onChange={e => update('salesEndDate', e.target.value)} />
               </div>
             </div>
+            <div className="form-group" style={{ marginTop: 8 }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                <input type="checkbox" checked={form.isBox} onChange={e => update('isBox', e.target.checked)} style={{ width: 18, height: 18, accentColor: 'var(--violet)' }} />
+                📦 ¿Es un box/combo?
+              </label>
+              {form.isBox && (
+                <div style={{ marginTop: 10 }}>
+                  <label style={{ fontSize: '0.85rem', color: 'var(--white-60)' }}>Cantidad de entradas por box</label>
+                  <input type="number" min="2" className="form-input" value={form.boxQuantity} onChange={e => update('boxQuantity', e.target.value)} style={{ maxWidth: 120, marginTop: 4 }} />
+                </div>
+              )}
+            </div>
             <button type="submit" className="btn-primary btn-sm" disabled={saving}>{saving ? 'Guardando...' : 'Agregar'}</button>
           </form>
         </div>
@@ -173,6 +189,18 @@ export default function TicketManager({ eventId }) {
                     <input type="datetime-local" className="form-input" value={editForm.salesEnd} onChange={e => setEditForm(f => ({ ...f, salesEnd: e.target.value }))} />
                   </div>
                 </div>
+                <div className="form-group" style={{ marginTop: 8 }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                    <input type="checkbox" checked={editForm.isBox || false} onChange={e => setEditForm(f => ({ ...f, isBox: e.target.checked }))} style={{ width: 18, height: 18, accentColor: 'var(--violet)' }} />
+                    📦 ¿Es un box/combo?
+                  </label>
+                  {editForm.isBox && (
+                    <div style={{ marginTop: 10 }}>
+                      <label style={{ fontSize: '0.85rem', color: 'var(--white-60)' }}>Cantidad de entradas por box</label>
+                      <input type="number" min="2" className="form-input" value={editForm.boxQuantity} onChange={e => setEditForm(f => ({ ...f, boxQuantity: e.target.value }))} style={{ maxWidth: 120, marginTop: 4 }} />
+                    </div>
+                  )}
+                </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button className="btn-primary btn-sm" onClick={saveEdit} disabled={saving}>{saving ? 'Guardando...' : '✓ Guardar'}</button>
                   <button className="btn-ghost btn-sm" onClick={() => setEditingId(null)}>Cancelar</button>
@@ -181,8 +209,8 @@ export default function TicketManager({ eventId }) {
             ) : (
               <>
                 <div className="ticket-type-info">
-                  <h4>{t.name}</h4>
-                  <div className="ticket-type-meta">{t.description || 'Sin descripción'}</div>
+                  <h4>{t.name} {t.isBox && <span style={{ background: 'rgba(139,92,246,0.15)', color: 'var(--violet)', padding: '2px 8px', borderRadius: 12, fontSize: '0.75rem', marginLeft: 6 }}>📦 Box x{t.boxQuantity}</span>}</h4>
+                  <div className="ticket-type-meta">{t.description || 'Sin descripción'}{t.isBox && ` · Incluye ${t.boxQuantity} entradas`}</div>
                   <div className="ticket-sold">{t.sold || 0} / {t.quantity} vendidas</div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

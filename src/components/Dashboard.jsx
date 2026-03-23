@@ -50,18 +50,24 @@ export default function Dashboard() {
         <div className="stats-grid">
           <div className="stat-card">
             <span className="stat-icon">📊</span>
-            <div className="stat-value gradient-text">{totalEvents}</div>
-            <div className="stat-label">Eventos totales</div>
+            <div>
+              <div className="stat-value gradient-text">{totalEvents}</div>
+              <div className="stat-label">Eventos totales</div>
+            </div>
           </div>
           <div className="stat-card">
             <span className="stat-icon">✅</span>
-            <div className="stat-value" style={{ color: 'var(--lime)' }}>{published}</div>
-            <div className="stat-label">Publicados</div>
+            <div>
+              <div className="stat-value" style={{ color: 'var(--lime)' }}>{published}</div>
+              <div className="stat-label">Publicados</div>
+            </div>
           </div>
           <div className="stat-card">
             <span className="stat-icon">📝</span>
-            <div className="stat-value" style={{ color: 'var(--coral)' }}>{drafts}</div>
-            <div className="stat-label">Borradores</div>
+            <div>
+              <div className="stat-value" style={{ color: 'var(--coral)' }}>{drafts}</div>
+              <div className="stat-label">Borradores</div>
+            </div>
           </div>
         </div>
 
@@ -86,7 +92,10 @@ export default function Dashboard() {
           events.map(evt => (
             <div key={evt.id} className="event-row-wrapper">
               <a href={`/dashboard/events/${evt.id}`} className="event-row">
-                <div className="event-row-info">
+                {evt.coverImage && (
+                  <img src={evt.coverImage} alt="" className="event-row-thumb" />
+                )}
+                <div className="event-row-info" style={{ flex: 1 }}>
                   <h3>{evt.title}</h3>
                   <div className="event-row-meta">
                     {evt.startDate && (
@@ -94,7 +103,6 @@ export default function Dashboard() {
                     )}
                     {evt.venue && <span className="event-meta-tag">🏛️ {evt.venue}</span>}
                     {evt.city && <span className="event-meta-tag">📍 {evt.city}</span>}
-                    {evt.maxCapacity && <span className="event-meta-tag">👥 {evt.maxCapacity}</span>}
                   </div>
                 </div>
                 <span className={`badge badge-${(evt.status || 'draft').toLowerCase()}`}>
