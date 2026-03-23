@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api, getToken } from '../lib/api';
+import ConfirmModal from './ConfirmModal';
 
 const STEPS = [
   { num: 1, label: 'Información', icon: '📝' },
@@ -39,6 +40,7 @@ export default function EventWizard({ eventId: editId }) {
   const [tickets, setTickets] = useState([]);
   const [ticketForm, setTicketForm] = useState({ name: '', price: '', quantity: '', description: '' });
   const [showTicketForm, setShowTicketForm] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [editingTicket, setEditingTicket] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -416,13 +418,7 @@ export default function EventWizard({ eventId: editId }) {
             <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid var(--white-10)' }}>
               <button
                 className="btn-danger-outline"
-                onClick={() => {
-                  if (window.confirm('¿Seguro que quieres eliminar este evento?')) {
-                    api.deleteEvent(editId).then(() => {
-                      window.location.href = '/dashboard';
-                    }).catch(err => alert('Error al eliminar: ' + err.message));
-                  }
-                }}
+                onClick={() => setShowDeleteModal(true)}
               >
                 🗑️ Eliminar evento
               </button>
@@ -430,6 +426,16 @@ export default function EventWizard({ eventId: editId }) {
           )}
         </div>
       )}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onConfirm={() => {
+          setShowDeleteModal(false);
+          api.deleteEvent(editId).then(() => {
+            window.location.href = '/dashboard';
+          }).catch(err => alert('Error al eliminar: ' + err.message));
+        }}
+        onCancel={() => setShowDeleteModal(false)}
+      />
     </div>
   );
 }

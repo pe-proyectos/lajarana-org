@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { api, getToken, clearToken } from '../lib/api';
+import ConfirmModal from './ConfirmModal';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   useEffect(() => {
     if (!getToken()) { window.location.href = '/login'; return; }
@@ -96,17 +98,24 @@ export default function Dashboard() {
                 title="Eliminar evento"
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (window.confirm('¿Seguro que quieres eliminar este evento?')) {
-                    api.deleteEvent(evt.id).then(() => {
-                      setEvents(prev => prev.filter(ev => ev.id !== evt.id));
-                    }).catch(err => alert('Error al eliminar: ' + err.message));
-                  }
+                  setDeleteTarget(evt.id);
                 }}
               >🗑️</button>
             </div>
           ))
         )}
       </div>
+      <ConfirmModal
+        isOpen={deleteTarget !== null}
+        onConfirm={() => {
+          const id = deleteTarget;
+          setDeleteTarget(null);
+          api.deleteEvent(id).then(() => {
+            setEvents(prev => prev.filter(ev => ev.id !== id));
+          }).catch(err => alert('Error al eliminar: ' + err.message));
+        }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }
