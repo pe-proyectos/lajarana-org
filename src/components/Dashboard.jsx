@@ -31,7 +31,7 @@ export default function Dashboard() {
   return (
     <div className="dash-layout">
       <header className="dash-header">
-        <a href="/dashboard" className="logo"><img src="/logo.png" alt="LaJarana" style={{height:'32px',marginRight:'8px',verticalAlign:'middle'}} /> LaJarana</a>
+        <a href="/dashboard" className="logo"><img src="/logo.png" alt="LaJarana" style={{height:'48px',marginRight:'8px',verticalAlign:'middle'}} /> LaJarana</a>
         <div className="dash-header-right">
           <a href="/dashboard/scanner" className="btn-ghost btn-sm" style={{ fontSize: '0.8rem' }}>📷 Scanner</a>
           <a href="/dashboard/plan" className="btn-ghost btn-sm" style={{ fontSize: '0.8rem' }}>

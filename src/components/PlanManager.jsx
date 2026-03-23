@@ -51,7 +51,7 @@ export default function PlanManager() {
   return (
     <div className="dash-layout">
       <header className="dash-header">
-        <a href="/dashboard" className="logo"><img src="/logo.png" alt="LaJarana" style={{height:'32px',marginRight:'8px',verticalAlign:'middle'}} /> LaJarana</a>
+        <a href="/dashboard" className="logo"><img src="/logo.png" alt="LaJarana" style={{height:'48px',marginRight:'8px',verticalAlign:'middle'}} /> LaJarana</a>
         <div className="dash-header-right">
           <a href="/dashboard" className="btn-ghost btn-sm">← Dashboard</a>
           <a href="/dashboard/profile" className="btn-ghost btn-sm">Perfil</a>
