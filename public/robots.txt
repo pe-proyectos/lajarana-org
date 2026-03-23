@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /dashboard/
-Sitemap: https://lajarana-org.luminari.agency/sitemap.xml
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://lajarana-org.luminari.agency/sitemap-index.xml
