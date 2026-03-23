@@ -1,0 +1,14 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import EntradaBoxManager from '../../../../components/EntradaBoxManager.jsx';
+import '../../../../styles/dashboard.css';
+const { id } = Astro.params;
+---
+<Layout title="Entrada Boxes — LaJarana" description="Gestiona los boxes de entradas para tu evento.">
+  <div class="dash-layout">
+    <header class="dash-header">
+      <a href="/dashboard" class="logo"><img src="/logo.png" alt="LaJarana" style="height:48px;margin-right:8px;vertical-align:middle;" /> LaJarana</a>
+    </header>
+    <EntradaBoxManager eventId={id} client:load />
+  </div>
+</Layout>

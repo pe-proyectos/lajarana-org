@@ -473,6 +473,18 @@ export default function EventWizard({ eventId: editId }) {
             )}
           </div>
 
+          {editId && (
+            <div className="review-section">
+              <h3 className="review-section-title">📦 Entrada Boxes</h3>
+              <p style={{ color: 'var(--white-60)', fontSize: '0.9rem', margin: '8px 0' }}>
+                Crea paquetes de entradas con precio especial para grupos.
+              </p>
+              <a href={`/dashboard/events/${editId}/boxes`} className="btn-primary btn-sm" style={{ display: 'inline-block', marginTop: 4 }}>
+                Gestionar Boxes →
+              </a>
+            </div>
+          )}
+
           {form.coverImage && (
             <div className="review-section">
               <h3 className="review-section-title">🖼️ Portada</h3>

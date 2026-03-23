@@ -66,4 +66,9 @@ export const api = {
   // Plans (new)
   activateEventPlan: (eventId, body) => request(`/plans/events/${eventId}/activate`, { method: 'POST', body: JSON.stringify(body) }),
   upgradeUnlimited: () => request('/plans/upgrade-unlimited', { method: 'POST' }),
+  // Entrada Boxes
+  getEntradaBoxes: (eventId) => request(`/entrada-boxes/event/${eventId}`),
+  createEntradaBox: (body) => request('/entrada-boxes', { method: 'POST', body: JSON.stringify(body) }),
+  updateEntradaBox: (id, body) => request(`/entrada-boxes/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteEntradaBox: (id) => request(`/entrada-boxes/${id}`, { method: 'DELETE' }),
 };
