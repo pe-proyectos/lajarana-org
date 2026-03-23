@@ -411,6 +411,23 @@ export default function EventWizard({ eventId: editId }) {
               💾 Guardar como borrador
             </button>
           </div>
+
+          {editId && (
+            <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid var(--white-10)' }}>
+              <button
+                className="btn-danger-outline"
+                onClick={() => {
+                  if (window.confirm('¿Seguro que quieres eliminar este evento?')) {
+                    api.deleteEvent(editId).then(() => {
+                      window.location.href = '/dashboard';
+                    }).catch(err => alert('Error al eliminar: ' + err.message));
+                  }
+                }}
+              >
+                🗑️ Eliminar evento
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

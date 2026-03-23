@@ -132,6 +132,44 @@
   font-size: 1.3rem;
 }
 
+.event-row-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.event-row-wrapper .event-row {
+  margin-bottom: 0;
+  flex: 1;
+}
+.btn-delete-event {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+.btn-delete-event:hover {
+  opacity: 1;
+  border-color: var(--coral);
+}
+.btn-danger-outline {
+  background: none;
+  border: 1px solid var(--coral);
+  color: var(--coral);
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-danger-outline:hover {
+  background: rgba(255, 82, 67, 0.15);
+}
+
 .event-row {
   background: var(--bg-card);
   border: 1px solid var(--white-06);

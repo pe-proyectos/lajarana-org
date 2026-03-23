@@ -74,22 +74,36 @@ export default function Dashboard() {
           </div>
         ) : (
           events.map(evt => (
-            <a key={evt.id} href={`/dashboard/events/${evt.id}`} className="event-row">
-              <div className="event-row-info">
-                <h3>{evt.title}</h3>
-                <div className="event-row-meta">
-                  {evt.startDate && (
-                    <span className="event-meta-tag">📅 {new Date(evt.startDate).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                  )}
-                  {evt.venue && <span className="event-meta-tag">🏛️ {evt.venue}</span>}
-                  {evt.city && <span className="event-meta-tag">📍 {evt.city}</span>}
-                  {evt.maxCapacity && <span className="event-meta-tag">👥 {evt.maxCapacity}</span>}
+            <div key={evt.id} className="event-row-wrapper">
+              <a href={`/dashboard/events/${evt.id}`} className="event-row">
+                <div className="event-row-info">
+                  <h3>{evt.title}</h3>
+                  <div className="event-row-meta">
+                    {evt.startDate && (
+                      <span className="event-meta-tag">📅 {new Date(evt.startDate).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                    )}
+                    {evt.venue && <span className="event-meta-tag">🏛️ {evt.venue}</span>}
+                    {evt.city && <span className="event-meta-tag">📍 {evt.city}</span>}
+                    {evt.maxCapacity && <span className="event-meta-tag">👥 {evt.maxCapacity}</span>}
+                  </div>
                 </div>
-              </div>
-              <span className={`badge badge-${(evt.status || 'draft').toLowerCase()}`}>
-                {evt.status === 'PUBLISHED' ? '✅ Publicado' : evt.status === 'DRAFT' ? '📝 Borrador' : evt.status || 'DRAFT'}
-              </span>
-            </a>
+                <span className={`badge badge-${(evt.status || 'draft').toLowerCase()}`}>
+                  {evt.status === 'PUBLISHED' ? '✅ Publicado' : evt.status === 'DRAFT' ? '📝 Borrador' : evt.status || 'DRAFT'}
+                </span>
+              </a>
+              <button
+                className="btn-delete-event"
+                title="Eliminar evento"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (window.confirm('¿Seguro que quieres eliminar este evento?')) {
+                    api.deleteEvent(evt.id).then(() => {
+                      setEvents(prev => prev.filter(ev => ev.id !== evt.id));
+                    }).catch(err => alert('Error al eliminar: ' + err.message));
+                  }
+                }}
+              >🗑️</button>
+            </div>
           ))
         )}
       </div>

@@ -37,6 +37,7 @@ export const api = {
   getEvent: (id) => request(`/events/${id}`),
   createEvent: (body) => request('/events', { method: 'POST', body: JSON.stringify(body) }),
   updateEvent: (id, body) => request(`/events/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  deleteEvent: (id) => request(`/events/${id}`, { method: 'DELETE' }),
   getTicketTypes: (eventId) => request(`/ticket-types/by-event/${eventId}`),
   createTicketType: (body) => request('/ticket-types', { method: 'POST', body: JSON.stringify(body) }),
   getEventStats: (id) => request(`/events/${id}/stats`),
