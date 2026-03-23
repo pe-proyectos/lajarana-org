@@ -17,7 +17,7 @@ export default function NavBar({ current = 'home' }) {
   return (
     <nav className="nav">
       <div className="container nav-inner">
-        <a href="/" className="logo">🎉 LaJarana <span className="logo-tag">Organizadores</span></a>
+        <a href="/" className="logo"><img src="/logo.png" alt="LaJarana" style={{height:'32px',marginRight:'8px',verticalAlign:'middle'}} /> LaJarana <span className="logo-tag">Organizadores</span></a>
         
         <button className="nav-mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
           <span className={`hamburger ${menuOpen ? 'hamburger--open' : ''}`}>

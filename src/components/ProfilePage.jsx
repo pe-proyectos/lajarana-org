@@ -57,7 +57,7 @@ export default function ProfilePage() {
   return (
     <div className="dash-layout">
       <header className="dash-header">
-        <a href="/dashboard" className="logo">🎉 LaJarana</a>
+        <a href="/dashboard" className="logo"><img src="/logo.png" alt="LaJarana" style={{height:'32px',marginRight:'8px',verticalAlign:'middle'}} /> LaJarana</a>
         <div className="dash-header-right">
           <a href="/dashboard" className="btn-ghost btn-sm">← Dashboard</a>
           <a href="/dashboard/plan" className="btn-ghost btn-sm">Mi Plan</a>

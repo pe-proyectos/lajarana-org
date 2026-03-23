@@ -7,7 +7,7 @@ const { id } = Astro.params;
 <Layout title="Entradas — LaJarana" description="Gestiona los tipos de entrada para tu evento.">
   <div class="dash-layout">
     <header class="dash-header">
-      <a href="/dashboard" class="logo">🎉 LaJarana</a>
+      <a href="/dashboard" class="logo"><img src="/logo.png" alt="LaJarana" style="height:32px;margin-right:8px;vertical-align:middle;" /> LaJarana</a>
     </header>
     <TicketManager eventId={id} client:load />
   </div>

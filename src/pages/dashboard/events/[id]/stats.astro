@@ -7,7 +7,7 @@ const { id } = Astro.params;
 <Layout title="Estadísticas — LaJarana" description="Estadísticas de ventas de tu evento en LaJarana.">
   <div class="dash-layout">
     <header class="dash-header">
-      <a href="/dashboard" class="logo">🎉 LaJarana</a>
+      <a href="/dashboard" class="logo"><img src="/logo.png" alt="LaJarana" style="height:32px;margin-right:8px;vertical-align:middle;" /> LaJarana</a>
     </header>
     <EventStats eventId={id} client:load />
   </div>
