@@ -60,7 +60,7 @@ export default function RegisterForm() {
           ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a>
         </div>
         <div className="auth-link" style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--white-06)' }}>
-          ¿Buscas comprar entradas? <a href="https://dev-lajarana.luminari.agency/register">Ir al sitio de compradores →</a>
+          ¿Buscas comprar entradas? <a href="https://lajarana.luminari.agency/register">Ir al sitio de compradores →</a>
         </div>
       </div>
     </div>

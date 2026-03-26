@@ -46,7 +46,7 @@ export default function LoginForm() {
           ¿No tienes cuenta? <a href="/register">Regístrate como organizador</a>
         </div>
         <div className="auth-link" style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--white-06)' }}>
-          ¿Buscas comprar entradas? <a href="https://dev-lajarana.luminari.agency/login">Ir al sitio de compradores →</a>
+          ¿Buscas comprar entradas? <a href="https://lajarana.luminari.agency/login">Ir al sitio de compradores →</a>
         </div>
       </div>
     </div>
